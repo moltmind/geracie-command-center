@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Geracie Command Center | It's a Done Deal!</title>
+  <style>
+    :root {
+      --navy: #1a1a5e;
+      --navy-light: #2d2d7a;
+      --royal: #3333a0;
+      --gold: #c9a84c;
+      --gold-light: #e6c86e;
+      --white: #ffffff;
+      --light-gray: #f5f6fa;
+      --medium-gray: #e2e4ed;
+      --text-dark: #1a1a2e;
+      --text-medium: #555580;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --info: #3498db;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--light-gray);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 40px;
+      height: 40px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .header-title {
+      color: var(--white);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .header-subtitle {
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-date {
+      color: var(--gold-light);
+      font-size: 0.85rem;
+    }
+
+    .header-verse {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.75rem;
+      font-style: italic;
+      max-width: 300px;
+      text-align: right;
+    }
+
+    /* ===== SIDEBAR + MAIN LAYOUT ===== */
+    .app-layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+
+    .sidebar {
+      width: 240px;
+      background: var(--white);
+      border-right: 1px solid var(--medium-gray);
+      padding: 1rem 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section {
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-medium);
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      margin: 2px 0.5rem;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+
+    .sidebar-item:hover {
+      background: var(--light-gray);
+    }
+
+    .sidebar-item.active {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .sidebar-item .icon {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar-item .badge {
+      margin-left: auto;
+      background: var(--danger);
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .page-description {
+      color: var(--text-medium);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      border: 1px solid var(--medium-gray);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== GRID ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--medium-gray);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-medium);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 0.25rem 0;
+    }
+
+    .stat-change {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .stat-change.up { color: var(--success); }
+    .stat-change.down { color: var(--danger); }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .btn-primary:hover { background: var(--navy-light); }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-gold:hover { background: var(--gold-light); }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--navy);
+      color: var(--navy);
+    }
+
+    .btn-outline:hover { background: var(--navy); color: var(--white); }
+
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+    /* ===== FORMS ===== */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 2px solid var(--medium-gray);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--navy);
+      outline: none;
+    }
+
+    .form-textarea { resize: vertical; min-height: 100px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ===== TABLES ===== */
+    .table-wrapper { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-medium);
+      padding: 0.75rem;
+      border-bottom: 2px solid var(--medium-gray);
+      font-weight: 700;
+    }
+
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--light-gray);
+      font-size: 0.9rem;
+    }
+
+    tr:hover { background: var(--light-gray); }
+
+    /* ===== STATUS BADGES ===== */
+    .status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-hot { background: #fde8e8; color: var(--danger); }
+    .status-warm { background: #fef3e2; color: var(--warning); }
+    .status-new { background: #e8f5e9; color: var(--success); }
+    .status-cold { background: #e3e8f0; color: #7f8c9b; }
+    .status-closed { background: #e8eaf6; color: var(--navy); }
+
+    /* ===== CHATBOT ===== */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+      border: 2px solid var(--medium-gray);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      background: var(--light-gray);
+    }
+
+    .chat-message {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-message.bot { flex-direction: row; }
+    .chat-message.user { flex-direction: row-reverse; }
+
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .chat-message.bot .chat-avatar {
+      background: var(--navy);
+      color: var(--gold);
+    }
+
+    .chat-message.user .chat-avatar {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .chat-bubble {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .chat-message.bot .chat-bubble {
+      background: var(--white);
+      border: 1px solid var(--medium-gray);
+    }
+
+    .chat-message.user .chat-bubble {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 0.75rem;
+      background: var(--white);
+      border-top: 1px solid var(--medium-gray);
+      gap: 8px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--medium-gray);
+      border-radius: 25px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .chat-input-area input:focus { border-color: var(--navy); }
+
+    .chat-send {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* ===== CONTENT GENERATOR ===== */
+    .generated-content {
+      background: var(--light-gray);
+      border: 2px solid var(--medium-gray);
+      border-radius: 8px;
+      padding: 1rem;
+      min-height: 150px;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .content-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 0.75rem;
+    }
+
+    /* ===== OPEN HOUSE ===== */
+    .oh-guest-card {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--light-gray);
+      gap: 1rem;
+    }
+
+    .oh-guest-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .oh-guest-info { flex: 1; }
+    .oh-guest-name { font-weight: 700; }
+    .oh-guest-detail { font-size: 0.8rem; color: var(--text-medium); }
+
+    /* ===== PIPELINE ===== */
+    .pipeline-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .pipeline-column {
+      background: var(--light-gray);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 300px;
+    }
+
+    .pipeline-column-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-medium);
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pipeline-count {
+      background: var(--navy);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+    }
+
+    .pipeline-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--medium-gray);
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+
+    .pipeline-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .pipeline-card-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .pipeline-card-detail {
+      font-size: 0.75rem;
+      color: var(--text-medium);
+      margin-top: 4px;
+    }
+
+    .pipeline-card-value {
+      font-weight: 700;
+      color: var(--success);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--medium-gray);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab {
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-medium);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab:hover { color: var(--navy); }
+
+    .tab.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ===== EMAIL TEMPLATES ===== */
+    .template-card {
+      border: 2px solid var(--medium-gray);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .template-card:hover {
+      border-color: var(--navy);
+      box-shadow: 0 4px 12px rgba(26,26,94,0.1);
+    }
+
+    .template-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--light-gray);
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .template-name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .template-preview {
+      font-size: 0.85rem;
+      color: var(--text-medium);
+      line-height: 1.4;
+    }
+
+    /* ===== MARKET DATA ===== */
+    .market-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0.75rem;
+    }
+
+    .market-bar-label {
+      width: 140px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .market-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--light-gray);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .market-bar-fill {
+      height: 100%;
+      border-radius: 12px;
+      transition: width 1s ease;
+    }
+
+    .market-bar-value {
+      width: 80px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .pipeline-board { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card { animation: fadeIn 0.3s ease; }
+
+    /* ===== COPY NOTIFICATION ===== */
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--success);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+    }
+
+    .copy-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== EMBEDDABLE WIDGET PREVIEW ===== */
+    .widget-preview {
+      position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      padding: 2rem;
+      min-height: 400px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+
+    .widget-frame {
+      width: 360px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .widget-header {
+      background: var(--navy);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .widget-header-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .widget-header-text {
+      color: white;
+    }
+
+    .widget-header-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .widget-header-status {
+      font-size: 0.75rem;
+      color: var(--gold-light);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .scripture-footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-medium);
+      font-style: italic;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--medium-gray);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">JG</div>
+    <div>
+      <div class="header-title">The Geracie Command Center</div>
+      <div class="header-subtitle">IT'S A DONE DEAL!</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-date" id="headerDate"></div>
+    <div class="header-verse">"Commit to the Lord whatever you do, and he will establish your plans." - Proverbs 16:3</div>
+  </div>
+</div>
+
+<div class="app-layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Dashboard</div>
+    </div>
+    <div class="sidebar-item active" onclick="showPage('dashboard')">
+      <span class="icon">&#127968;</span> Overview
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Lead Generation</div>
+    </div>
+    <div class="sidebar-item" onclick="showPage('chatbot')">
+      <span class="icon">&#129302;</span> AI Chatbot
+    </div>
+    <div class="sidebar-item" onclick="showPage('openhouse')">
+      <span class="icon">&#128203;</span> Open House
+      <span class="badge" id="ohBadge">3</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Content Engine</div>
+    </div>
+    <div class="sidebar-item" onclick="showPage('listings')">
+      <span class="icon">&#127969;</span> Listing Writer
+    </div>
+    <div class="sidebar-item" onclick="showPage('social')">
+      <span class="icon">&#128247;</span> Social Posts
+    </div>
+    <div class="sidebar-item" onclick="showPage('email')">
+      <span class="icon">&#9993;</span> Email Campaigns
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Client Pipeline</div>
+    </div>
+    <div class="sidebar-item" onclick="showPage('pipeline')">
+      <span class="icon">&#128200;</span> Pipeline
+      <span class="badge">12</span>
+    </div>
+    <div class="sidebar-item" onclick="showPage('followup')">
+      <span class="icon">&#128222;</span> Follow-Ups
+      <span class="badge">5</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Market Intel</div>
+    </div>
+    <div class="sidebar-item" onclick="showPage('market')">
+      <span class="icon">&#128202;</span> Market Data
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Deploy</div>
+    </div>
+    <div class="sidebar-item" onclick="showPage('widget')">
+      <span class="icon">&#128268;</span> Website Widget
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-title">Welcome back, Jim & Jill!</div>
+        <div class="page-description">Your real estate command center at a glance.</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Active Leads</div>
+          <div class="stat-value">47</div>
+          <div class="stat-change up">+8 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Listings</div>
+          <div class="stat-value">12</div>
+          <div class="stat-change up">3 new this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Closings</div>
+          <div class="stat-value">4</div>
+          <div class="stat-change">$1.48M total value</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Follow-Ups Due</div>
+          <div class="stat-value" style="color: var(--warning);">5</div>
+          <div class="stat-change down">2 overdue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Chatbot Leads</div>
+          <div class="stat-value">23</div>
+          <div class="stat-change up">Auto-captured this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Content Generated</div>
+          <div class="stat-value">86</div>
+          <div class="stat-change">Posts, emails, & descriptions</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">&#128197; Today's Action Items</div>
+          <div id="todayActions"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">&#128293; Hot Leads</div>
+          <div id="hotLeads"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1rem;">
+        <div class="card-title">&#128161; Quick Actions</div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="showPage('listings')">Write a Listing Description</button>
+          <button class="btn btn-gold" onclick="showPage('social')">Generate Social Post</button>
+          <button class="btn btn-outline" onclick="showPage('openhouse')">Start Open House Sign-In</button>
+          <button class="btn btn-outline" onclick="showPage('email')">Send Follow-Up Email</button>
+          <button class="btn btn-outline" onclick="showPage('chatbot')">Preview Chatbot</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI CHATBOT ===== -->
+    <div class="page" id="page-chatbot">
+      <div class="page-header">
+        <div class="page-title">AI Lead Capture Chatbot</div>
+        <div class="page-description">Smart chatbot that knows your listings, qualifies leads, and books appointments 24/7.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#129302; Chatbot Preview</div>
+            <div class="chat-container">
+              <div class="chat-messages" id="chatMessages">
+                <div class="chat-message bot">
+                  <div class="chat-avatar">JG</div>
+                  <div class="chat-bubble">Hi there! Welcome to The Jim Geracie Team. I'm here to help you find your perfect home in the greater Milwaukee area, or help you get top dollar for your current one. What can I help you with today?</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()">
+                <button class="chat-send" onclick="sendChat()">&#10148;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#9881; Chatbot Settings</div>
+            <div class="form-group">
+              <label class="form-label">Greeting Message</label>
+              <textarea class="form-textarea" rows="3">Hi there! Welcome to The Jim Geracie Team. I'm here to help you find your perfect home in the greater Milwaukee area, or help you get top dollar for your current one. What can I help you with today?</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lead Qualification Questions</label>
+              <div style="font-size:0.85rem; color: var(--text-medium); margin-bottom: 0.5rem;">The chatbot will naturally ask these to qualify leads:</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label><input type="checkbox" checked> Are you looking to buy or sell?</label>
+                <label><input type="checkbox" checked> What's your ideal timeline?</label>
+                <label><input type="checkbox" checked> What areas are you interested in?</label>
+                <label><input type="checkbox" checked> What's your price range?</label>
+                <label><input type="checkbox" checked> Are you pre-approved for financing?</label>
+                <label><input type="checkbox" checked> Would you like to schedule a consultation?</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Service Areas</label>
+              <input class="form-input" value="Brookfield, Waukesha, New Berlin, Menomonee Falls, Greenfield, West Allis, Muskego, Williams Bay, Milwaukee, Oshkosh, Fox Valley">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Auto-Response Hours</label>
+              <div class="form-row">
+                <input class="form-input" type="time" value="00:00">
+                <input class="form-input" type="time" value="23:59">
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-medium);margin-top:4px;">24/7 coverage means you never miss a lead</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">&#128202; Chatbot Performance</div>
+            <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="stat-card">
+                <div class="stat-label">Conversations</div>
+                <div class="stat-value">156</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Leads Captured</div>
+                <div class="stat-value">23</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Appointments Set</div>
+                <div class="stat-value">8</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Conversion Rate</div>
+                <div class="stat-value">14.7%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LISTING WRITER ===== -->
+    <div class="page" id="page-listings">
+      <div class="page-header">
+        <div class="page-title">AI Listing Content Writer</div>
+        <div class="page-description">Generate MLS descriptions, feature sheets, and marketing copy from property details.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#127969; Property Details</div>
+            <div class="form-group">
+              <label class="form-label">Property Address</label>
+              <input class="form-input" id="listAddr" placeholder="e.g. 2100 S Cherrywood Ct, New Berlin, WI 53151">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Price</label>
+                <input class="form-input" id="listPrice" placeholder="$725,000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Type</label>
+                <select class="form-select" id="listType">
+                  <option>Single Family</option>
+                  <option>Condo</option>
+                  <option>Townhome</option>
+                  <option>Multi-Family</option>
+                  <option>Land/Lot</option>
+                  <option>Commercial</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Bedrooms</label>
+                <input class="form-input" id="listBeds" type="number" placeholder="4">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Bathrooms</label>
+                <input class="form-input" id="listBaths" placeholder="2.5">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Sq Footage</label>
+                <input class="form-input" id="listSqft" type="number" placeholder="2934">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year Built</label>
+                <input class="form-input" id="listYear" type="number" placeholder="2005">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Features & Highlights</label>
+              <textarea class="form-textarea" id="listFeatures" rows="4" placeholder="Updated kitchen with granite counters, hardwood floors, finished basement, large backyard, 2-car garage, new roof 2023..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Neighborhood Highlights</label>
+              <textarea class="form-textarea" id="listNeighborhood" rows="2" placeholder="Close to schools, parks, shopping, easy freeway access..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="generateListing()" style="width:100%;">Generate Listing Content</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#128196; Generated Content</div>
+            <div class="tabs">
+              <div class="tab active" onclick="showListingTab('mls')">MLS Description</div>
+              <div class="tab" onclick="showListingTab('social')">Social Post</div>
+              <div class="tab" onclick="showListingTab('flyer')">Feature Sheet</div>
+            </div>
+            <div class="tab-content active" id="listing-mls">
+              <div class="generated-content" id="mlsOutput">Enter property details and click "Generate" to create your listing content...</div>
+              <div class="content-actions">
+                <button class="btn btn-sm btn-primary" onclick="copyContent('mlsOutput')">Copy</button>
+                <button class="btn btn-sm btn-outline" onclick="generateListing()">Regenerate</button>
+              </div>
+            </div>
+            <div class="tab-content" id="listing-social">
+              <div class="generated-content" id="socialListOutput">Generate content to see your social media post...</div>
+              <div class="content-actions">
+                <button class="btn btn-sm btn-primary" onclick="copyContent('socialListOutput')">Copy</button>
+              </div>
+            </div>
+            <div class="tab-content" id="listing-flyer">
+              <div class="generated-content" id="flyerOutput">Generate content to see your feature sheet text...</div>
+              <div class="content-actions">
+                <button class="btn btn-sm btn-primary" onclick="copyContent('flyerOutput')">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SOCIAL MEDIA POST GENERATOR ===== -->
+    <div class="page" id="page-social">
+      <div class="page-header">
+        <div class="page-title">Social Media Content Generator</div>
+        <div class="page-description">Generate engaging Facebook & Instagram posts tailored to The Jim Geracie Team brand.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#128247; Post Generator</div>
+            <div class="form-group">
+              <label class="form-label">Post Type</label>
+              <select class="form-select" id="postType" onchange="updatePostTemplate()">
+                <option value="just_listed">Just Listed</option>
+                <option value="just_sold">Just Sold</option>
+                <option value="open_house">Open House Announcement</option>
+                <option value="market_update">Market Update</option>
+                <option value="tip">Home Buyer/Seller Tip</option>
+                <option value="testimonial">Client Testimonial Spotlight</option>
+                <option value="community">Community Spotlight</option>
+                <option value="milestone">Team Milestone/Award</option>
+                <option value="holiday">Holiday/Seasonal</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Details</label>
+              <textarea class="form-textarea" id="postDetails" rows="4" placeholder="Add any specific details you want included..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tone</label>
+              <select class="form-select" id="postTone">
+                <option value="professional">Professional & Warm</option>
+                <option value="excited">Excited & Celebratory</option>
+                <option value="educational">Educational & Helpful</option>
+                <option value="personal">Personal & Relatable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Include Hashtags</label>
+              <select class="form-select" id="postHashtags">
+                <option value="yes">Yes - Standard Set</option>
+                <option value="custom">Yes - Custom</option>
+                <option value="no">No Hashtags</option>
+              </select>
+            </div>
+            <button class="btn btn-gold" onclick="generateSocialPost()" style="width:100%;">Generate Social Post</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">&#128197; Content Calendar Ideas</div>
+            <div id="calendarSuggestions"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#128196; Generated Post</div>
+            <div class="generated-content" id="socialOutput" style="min-height:200px;">Select a post type and click "Generate" to create your social media content...</div>
+            <div class="content-actions">
+              <button class="btn btn-sm btn-primary" onclick="copyContent('socialOutput')">Copy Post</button>
+              <button class="btn btn-sm btn-outline" onclick="generateSocialPost()">Regenerate</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">&#128200; Recommended Posting Schedule</div>
+            <table>
+              <thead>
+                <tr><th>Day</th><th>Time</th><th>Content Type</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Monday</td><td>9:00 AM</td><td>Market Update / Tip</td></tr>
+                <tr><td>Wednesday</td><td>12:00 PM</td><td>New Listing / Just Sold</td></tr>
+                <tr><td>Thursday</td><td>5:00 PM</td><td>Community / Personal</td></tr>
+                <tr><td>Saturday</td><td>10:00 AM</td><td>Open House / Testimonial</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMAIL CAMPAIGNS ===== -->
+    <div class="page" id="page-email">
+      <div class="page-header">
+        <div class="page-title">Email Campaign Builder</div>
+        <div class="page-description">Ready-to-send email templates for every stage of the client journey.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#128231; Email Templates</div>
+
+            <div class="template-card" onclick="loadEmailTemplate('welcome')">
+              <div class="template-tag">New Lead</div>
+              <div class="template-name">Welcome / First Touch</div>
+              <div class="template-preview">Warm welcome email for new leads with intro to the team and next steps...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('buyer_nurture')">
+              <div class="template-tag">Buyer</div>
+              <div class="template-name">Buyer Nurture Sequence</div>
+              <div class="template-preview">5-email drip series for buyers: market prep, financing tips, neighborhood guide...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('seller_nurture')">
+              <div class="template-tag">Seller</div>
+              <div class="template-name">Seller Nurture Sequence</div>
+              <div class="template-preview">5-email drip series for sellers: CMA preview, staging tips, pricing strategy...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('open_house_followup')">
+              <div class="template-tag">Open House</div>
+              <div class="template-name">Open House Follow-Up</div>
+              <div class="template-preview">Same-day follow-up for open house visitors with property recap and next steps...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('just_listed')">
+              <div class="template-tag">Listing</div>
+              <div class="template-name">Just Listed Announcement</div>
+              <div class="template-preview">Blast email announcing a new listing to your sphere of influence...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('anniversary')">
+              <div class="template-tag">Past Client</div>
+              <div class="template-name">Home Purchase Anniversary</div>
+              <div class="template-preview">Annual check-in celebrating their home purchase anniversary...</div>
+            </div>
+
+            <div class="template-card" onclick="loadEmailTemplate('referral')">
+              <div class="template-tag">Referral</div>
+              <div class="template-name">Referral Request</div>
+              <div class="template-preview">Tasteful referral request to happy past clients...</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#9999; Email Editor</div>
+            <div class="form-group">
+              <label class="form-label">Subject Line</label>
+              <input class="form-input" id="emailSubject" placeholder="Select a template to get started...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Body</label>
+              <textarea class="form-textarea" id="emailBody" rows="14" placeholder="Select a template from the left to load it here for editing..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Personalize</label>
+              <div class="form-row">
+                <input class="form-input" id="emailClientName" placeholder="Client's first name">
+                <input class="form-input" id="emailProperty" placeholder="Property address (if applicable)">
+              </div>
+            </div>
+            <div class="content-actions">
+              <button class="btn btn-primary" onclick="personalizeEmail()">Personalize & Preview</button>
+              <button class="btn btn-outline" onclick="copyContent('emailBody')">Copy Email</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OPEN HOUSE SIGN-IN ===== -->
+    <div class="page" id="page-openhouse">
+      <div class="page-header">
+        <div class="page-title">Digital Open House Sign-In</div>
+        <div class="page-description">Capture visitor info digitally. Auto-triggers follow-up emails and adds leads to pipeline.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#128203; Open House Setup</div>
+            <div class="form-group">
+              <label class="form-label">Property Address</label>
+              <input class="form-input" id="ohAddress" placeholder="Enter the open house property address">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input class="form-input" id="ohDate" type="date">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Time</label>
+                <input class="form-input" id="ohTime" value="1:00 PM - 3:00 PM">
+              </div>
+            </div>
+            <button class="btn btn-gold" onclick="startOpenHouse()" style="width:100%;">Start Open House Sign-In</button>
+          </div>
+
+          <div class="card" id="ohSignInForm" style="display:none;">
+            <div class="card-title">&#128075; Welcome! Please sign in.</div>
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input class="form-input" id="ohName" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input class="form-input" id="ohEmail" type="email" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input class="form-input" id="ohPhone" type="tel" placeholder="(___) ___-____">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Are you working with an agent?</label>
+              <select class="form-select" id="ohAgent">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+                <option value="maybe">I'm open to it</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">What brings you to this open house?</label>
+              <select class="form-select" id="ohIntent">
+                <option value="buying">Actively looking to buy</option>
+                <option value="curious">Just curious / Neighbor</option>
+                <option value="investor">Investor</option>
+                <option value="selling">Thinking about selling my home</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">How did you hear about this open house?</label>
+              <select class="form-select" id="ohSource">
+                <option value="sign">Yard Sign</option>
+                <option value="online">Online (Zillow, Realtor, etc.)</option>
+                <option value="social">Social Media</option>
+                <option value="referral">Friend / Family Referral</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <button class="btn btn-success" onclick="submitOpenHouse()" style="width:100%;font-size:1.1rem;padding:0.8rem;">Sign In</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#128101; Today's Visitors (<span id="ohCount">0</span>)</div>
+            <div id="ohGuestList">
+              <div style="text-align:center;color:var(--text-medium);padding:2rem;">No visitors yet. Start your open house to begin capturing leads.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">&#9889; Auto Follow-Up Status</div>
+            <div style="font-size:0.9rem;color:var(--text-medium);">
+              <p style="margin-bottom:0.5rem;">When a visitor signs in, they automatically receive:</p>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.5rem;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="color:var(--success);">&#10003;</span> Immediate thank-you email with property details
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="color:var(--success);">&#10003;</span> Added to client pipeline as new lead
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="color:var(--success);">&#10003;</span> 24-hour follow-up email queued
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="color:var(--success);">&#10003;</span> 7-day check-in email scheduled
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="color:var(--success);">&#10003;</span> Follow-up task created for Jim or Jill
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLIENT PIPELINE ===== -->
+    <div class="page" id="page-pipeline">
+      <div class="page-header">
+        <div class="page-title">Client Pipeline</div>
+        <div class="page-description">Track every lead from first contact to closing day. Drag cards between stages.</div>
+      </div>
+
+      <div class="card" style="padding: 0.75rem;">
+        <div style="display:flex;gap:8px;margin-bottom:1rem;">
+          <button class="btn btn-sm btn-primary" onclick="addNewLead()">+ Add Lead</button>
+          <button class="btn btn-sm btn-outline">Export CSV</button>
+          <input class="form-input" style="max-width:250px;padding:0.4rem 0.8rem;" placeholder="Search leads...">
+        </div>
+
+        <div class="pipeline-board" id="pipelineBoard"></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLLOW-UPS ===== -->
+    <div class="page" id="page-followup">
+      <div class="page-header">
+        <div class="page-title">Follow-Up Manager</div>
+        <div class="page-description">Never miss a follow-up. Automated reminders keep you connected with every client.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">&#128276; Upcoming Follow-Ups</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="followUpTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">&#10003; Completed This Week</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Completed</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Sandra M.</td><td>Phone Call</td><td>Mar 22</td><td style="color:var(--success)">Scheduled showing for Saturday</td></tr>
+              <tr><td>Eric & Dana P.</td><td>Email</td><td>Mar 21</td><td style="color:var(--success)">Sent CMA - awaiting response</td></tr>
+              <tr><td>Tom R.</td><td>Text</td><td>Mar 20</td><td>Confirmed still looking - spring timeline</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MARKET DATA ===== -->
+    <div class="page" id="page-market">
+      <div class="page-header">
+        <div class="page-title">Fox Valley / Greater Milwaukee Market Intelligence</div>
+        <div class="page-description">Local market trends to share with clients and inform your pricing strategy.</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Median Home Price</div>
+          <div class="stat-value">$349K</div>
+          <div class="stat-change up">+5.2% YoY</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Days on Market</div>
+          <div class="stat-value">28</div>
+          <div class="stat-change up">-6 vs last year</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Listings</div>
+          <div class="stat-value">1,247</div>
+          <div class="stat-change down">-12% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">List-to-Sale Ratio</div>
+          <div class="stat-value">98.4%</div>
+          <div class="stat-change up">Strong seller's market</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">&#127968; Median Price by Area</div>
+          <div id="marketBars"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">&#128200; Market Trends</div>
+          <div id="marketTrends"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">&#128161; Shareable Market Insight</div>
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+          <button class="btn btn-sm btn-primary" onclick="generateMarketPost()">Generate Market Update Post</button>
+          <button class="btn btn-sm btn-outline" onclick="generateMarketEmail()">Generate Client Market Email</button>
+        </div>
+        <div class="generated-content" id="marketContent">Click a button above to generate shareable market content for your clients and social media...</div>
+        <div class="content-actions">
+          <button class="btn btn-sm btn-primary" onclick="copyContent('marketContent')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMBEDDABLE WIDGET ===== -->
+    <div class="page" id="page-widget">
+      <div class="page-header">
+        <div class="page-title">Website Chat Widget</div>
+        <div class="page-description">Embed this AI chatbot on donedeal.com to capture leads 24/7. Just copy the code below.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <div class="card-title">&#128268; Embed Code</div>
+            <div style="font-size:0.85rem;color:var(--text-medium);margin-bottom:1rem;">Copy this code and paste it before the closing &lt;/body&gt; tag on any page of donedeal.com</div>
+            <div class="generated-content" id="embedCode" style="font-family:monospace;font-size:0.8rem;background:#1a1a2e;color:#e6c86e;padding:1.5rem;border-radius:8px;white-space:pre-wrap;">&lt;!-- The Jim Geracie Team AI Chat Widget --&gt;
+&lt;script&gt;
+(function() {
+  var w = document.createElement('div');
+  w.id = 'geracie-chat-widget';
+  w.innerHTML = '&lt;div style="position:fixed;bottom:20px;right:20px;z-index:9999;"&gt;' +
+    '&lt;div id="gc-chat-bubble" onclick="document.getElementById(\'gc-chat-panel\').style.display=\'block\';this.style.display=\'none\';" ' +
+    'style="width:60px;height:60px;border-radius:50%;background:#1a1a5e;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);color:#c9a84c;font-size:24px;"&gt;&#128172;&lt;/div&gt;' +
+    '&lt;div id="gc-chat-panel" style="display:none;width:380px;height:500px;background:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.2);overflow:hidden;"&gt;' +
+    '&lt;div style="background:#1a1a5e;padding:16px;color:white;display:flex;justify-content:space-between;align-items:center;"&gt;' +
+    '&lt;div&gt;&lt;b&gt;The Jim Geracie Team&lt;/b&gt;&lt;br&gt;&lt;small style="color:#c9a84c"&gt;Online | Ready to help&lt;/small&gt;&lt;/div&gt;' +
+    '&lt;span onclick="document.getElementById(\'gc-chat-panel\').style.display=\'none\';document.getElementById(\'gc-chat-bubble\').style.display=\'flex\';" style="cursor:pointer;font-size:20px;"&gt;&times;&lt;/span&gt;' +
+    '&lt;/div&gt;&lt;div style="padding:16px;height:380px;overflow-y:auto;background:#f5f6fa;"&gt;' +
+    '&lt;div style="background:white;padding:12px;border-radius:12px;margin-bottom:8px;border:1px solid #e2e4ed;"&gt;' +
+    'Hi! I\'m the Geracie Team assistant. Whether you\'re buying, selling, or just curious about your home\'s value, I\'m here to help 24/7. What can I do for you?&lt;/div&gt;' +
+    '&lt;/div&gt;&lt;div style="padding:12px;border-top:1px solid #e2e4ed;display:flex;gap:8px;"&gt;' +
+    '&lt;input style="flex:1;padding:8px 12px;border:2px solid #e2e4ed;border-radius:20px;" placeholder="Type a message..."&gt;' +
+    '&lt;button style="width:36px;height:36px;border-radius:50%;background:#1a1a5e;color:white;border:none;cursor:pointer;"&gt;&#10148;&lt;/button&gt;' +
+    '&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;';
+  document.body.appendChild(w);
+})();
+&lt;/script&gt;</div>
+            <div class="content-actions">
+              <button class="btn btn-primary" onclick="copyContent('embedCode')">Copy Embed Code</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">&#128064; Widget Preview</div>
+            <div class="widget-preview">
+              <div style="position:absolute;top:2rem;left:2rem;color:white;">
+                <div style="font-size:1.5rem;font-weight:700;">donedeal.com</div>
+                <div style="opacity:0.7;margin-top:0.5rem;">Your website with the chat widget installed</div>
+              </div>
+              <div class="widget-frame">
+                <div class="widget-header">
+                  <div class="widget-header-avatar">JG</div>
+                  <div class="widget-header-text">
+                    <div class="widget-header-name">The Jim Geracie Team</div>
+                    <div class="widget-header-status">Online | Ready to help</div>
+                  </div>
+                </div>
+                <div style="padding:1rem;background:var(--light-gray);height:200px;">
+                  <div style="background:white;padding:0.75rem;border-radius:12px;border:1px solid var(--medium-gray);font-size:0.85rem;line-height:1.5;">
+                    Hi! I'm the Geracie Team assistant. Whether you're buying, selling, or just curious about your home's value, I'm here to help 24/7. What can I do for you?
+                  </div>
+                </div>
+                <div style="padding:0.75rem;border-top:1px solid var(--medium-gray);display:flex;gap:8px;">
+                  <input style="flex:1;padding:6px 12px;border:2px solid var(--medium-gray);border-radius:20px;font-size:0.85rem;" placeholder="Type a message..." disabled>
+                  <div style="width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:white;font-size:0.8rem;">&#10148;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+</div><!-- end app-layout -->
+
+<div class="scripture-footer">
+  "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters." - Colossians 3:23<br>
+  <span style="font-style:normal;font-size:0.75rem;color:#999;margin-top:0.5rem;display:inline-block;">Built with love by Cole | Powered by Claude AI</span>
+</div>
+
+<div class="copy-toast" id="copyToast">Copied to clipboard!</div>
+
+<script>
+// ===== NAVIGATION =====
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ===== DATE =====
+document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US', {
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+});
+
+// ===== DASHBOARD DATA =====
+function loadDashboard() {
+  const actions = [
+    { icon: '&#128222;', text: 'Call back Sarah K. - interested in Brookfield homes', priority: 'hot' },
+    { icon: '&#128231;', text: 'Send CMA report to Johnson family', priority: 'warm' },
+    { icon: '&#127969;', text: 'Prepare listing photos for 2330 S Sunny Slope', priority: 'new' },
+    { icon: '&#128197;', text: 'Open house Saturday 1-3 PM at Cherrywood Ct', priority: 'warm' },
+    { icon: '&#128172;', text: '3 new chatbot leads to review', priority: 'hot' },
+  ];
+
+  document.getElementById('todayActions').innerHTML = actions.map(a =>
+    `<div style="display:flex;align-items:center;gap:12px;padding:0.6rem 0;border-bottom:1px solid var(--light-gray);">
+      <span style="font-size:1.2rem;">${a.icon}</span>
+      <span style="flex:1;font-size:0.9rem;">${a.text}</span>
+      <span class="status status-${a.priority}">${a.priority}</span>
+    </div>`
+  ).join('');
+
+  const hotLeads = [
+    { name: 'Sarah K.', detail: 'Buyer | Brookfield | $400-550K', score: 92 },
+    { name: 'Mike & Lisa T.', detail: 'Seller | New Berlin | Spring listing', score: 88 },
+    { name: 'David R.', detail: 'Investor | Multi-family | $500K+', score: 85 },
+    { name: 'Jennifer W.', detail: 'Buyer | Waukesha | First-time', score: 78 },
+  ];
+
+  document.getElementById('hotLeads').innerHTML = hotLeads.map(l =>
+    `<div style="display:flex;align-items:center;gap:12px;padding:0.6rem 0;border-bottom:1px solid var(--light-gray);">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;">${l.name.charAt(0)}</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:0.9rem;">${l.name}</div>
+        <div style="font-size:0.8rem;color:var(--text-medium);">${l.detail}</div>
+      </div>
+      <div style="background:${l.score >= 85 ? '#fde8e8' : '#fef3e2'};color:${l.score >= 85 ? 'var(--danger)' : 'var(--warning)'};padding:4px 10px;border-radius:20px;font-size:0.8rem;font-weight:700;">${l.score}</div>
+    </div>`
+  ).join('');
+}
+
+// ===== CHATBOT =====
+const chatResponses = {
+  'buy': "That's exciting! The greater Milwaukee area has some amazing opportunities right now. To help match you with the perfect home, can I ask a few quick questions?\n\n1. What areas are you most interested in?\n2. What's your ideal price range?\n3. How many bedrooms/bathrooms do you need?\n4. What's your timeline for purchasing?",
+  'sell': "Great, you've come to the right team! The Jim Geracie Team has a proven track record of getting top dollar for our clients. Here's what I can help with:\n\n- Free Comparative Market Analysis (CMA) to see your home's current value\n- Our proven marketing strategy that averages just 28 days on market\n- Professional staging and photography consultation\n\nWould you like to schedule a free, no-obligation home valuation?",
+  'value': "I'd love to help you find out what your home is worth! Our free home valuation takes into account recent comparable sales, current market trends, and your home's unique features.\n\nTo get started, could you share:\n1. Your home's address\n2. Approximate square footage\n3. Number of beds/baths\n4. Any recent updates or renovations?\n\nOr visit donedeal.com and click 'Home Value' for an instant estimate!",
+  'default': "Thanks for reaching out! I'm here to help with anything real estate related in the greater Milwaukee and Fox Valley area. Here are some things I can help with:\n\n- Search available homes for sale\n- Get a free home valuation\n- Learn about the local market\n- Schedule a consultation with Jim or Jill\n- Information about our current listings\n\nWhat interests you most?"
+};
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const messages = document.getElementById('chatMessages');
+  messages.innerHTML += `<div class="chat-message user"><div class="chat-avatar">You</div><div class="chat-bubble">${msg}</div></div>`;
+  input.value = '';
+
+  const lower = msg.toLowerCase();
+  let response = chatResponses.default;
+  if (lower.includes('buy') || lower.includes('looking') || lower.includes('find') || lower.includes('search')) response = chatResponses.buy;
+  else if (lower.includes('sell') || lower.includes('list')) response = chatResponses.sell;
+  else if (lower.includes('value') || lower.includes('worth') || lower.includes('price')) response = chatResponses.value;
+
+  setTimeout(() => {
+    messages.innerHTML += `<div class="chat-message bot"><div class="chat-avatar">JG</div><div class="chat-bubble">${response.replace(/\n/g, '<br>')}</div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }, 800);
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// ===== LISTING GENERATOR =====
+function generateListing() {
+  const addr = document.getElementById('listAddr').value || '2100 S Cherrywood Ct, New Berlin, WI 53151';
+  const price = document.getElementById('listPrice').value || '$725,000';
+  const type = document.getElementById('listType').value;
+  const beds = document.getElementById('listBeds').value || '5';
+  const baths = document.getElementById('listBaths').value || '2.5';
+  const sqft = document.getElementById('listSqft').value || '2934';
+  const year = document.getElementById('listYear').value || '2005';
+  const features = document.getElementById('listFeatures').value || 'Updated kitchen with granite counters, hardwood floors, finished basement, large backyard';
+  const neighborhood = document.getElementById('listNeighborhood').value || 'Close to schools, parks, shopping, easy freeway access';
+
+  document.getElementById('mlsOutput').textContent = `Welcome to ${addr} - a stunning ${beds}-bedroom, ${baths}-bathroom ${type.toLowerCase()} offering ${Number(sqft).toLocaleString()} sq ft of beautifully maintained living space. Built in ${year} and priced at ${price}, this exceptional home combines modern updates with timeless charm.
+
+Step inside to discover ${features.toLowerCase()}. Every detail has been thoughtfully maintained and updated to provide move-in ready comfort for you and your family.
+
+The location is unbeatable - ${neighborhood.toLowerCase()}. You'll love the convenience of everything this vibrant community has to offer.
+
+Don't miss your chance to make this house your home. Contact The Jim Geracie Team today at (262) 901-0825 or visit donedeal.com to schedule your private showing. It's a Done Deal!
+
+Listed by The Jim Geracie Team | Realty Executives Integrity
+(262) 901-0825 | jim@donedeal.com | donedeal.com`;
+
+  document.getElementById('socialListOutput').textContent = `JUST LISTED in ${addr.split(',').slice(-2).join(',').trim()}! ${beds} BD | ${baths} BA | ${Number(sqft).toLocaleString()} SF
+
+${price}
+
+${features}
+
+This one won't last! DM us or call (262) 901-0825 to schedule your private showing.
+
+${neighborhood}
+
+#JustListed #WIMoves #${addr.split(',')[1]?.trim().replace(/\s/g,'')||'Wisconsin'}RealEstate #TheJimGeracieTeam #ItsADoneDeal #RealtyExecutives #WisconsinHomes #DreamHome #HomeForSale #RealEstate`;
+
+  document.getElementById('flyerOutput').textContent = `THE JIM GERACIE TEAM PRESENTS
+
+${addr.toUpperCase()}
+${price}
+
+${beds} Bedrooms | ${baths} Bathrooms | ${Number(sqft).toLocaleString()} Square Feet
+Built: ${year} | Type: ${type}
+
+PROPERTY HIGHLIGHTS:
+${features.split(',').map(f => '  * ' + f.trim()).join('\n')}
+
+LOCATION & LIFESTYLE:
+${neighborhood}
+
+SCHEDULE YOUR PRIVATE SHOWING TODAY
+The Jim Geracie Team | Realty Executives Integrity
+Phone: (262) 901-0825
+Email: jim@donedeal.com
+Web: donedeal.com
+
+"It's a Done Deal!"`;
+}
+
+function showListingTab(tab) {
+  document.querySelectorAll('#page-listings .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-listings .tab-content').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('listing-' + tab).classList.add('active');
+}
+
+// ===== SOCIAL POST GENERATOR =====
+const socialTemplates = {
+  just_listed: (details, tone) => `NEW ON THE MARKET!\n\nWe're thrilled to present this incredible property to the market. ${details || 'Another beautiful home ready for its next chapter.'}\n\nInterested? Don't wait - homes in this area are moving fast!\n\nCall us: (262) 901-0825\nVisit: donedeal.com\n\n#JustListed #TheJimGeracieTeam #ItsADoneDeal #WisconsinRealEstate #HomeForSale #RealtyExecutives #DreamHome`,
+
+  just_sold: (details) => `SOLD! Another done deal!\n\nCongratulations to our amazing clients on the successful closing of their home! ${details || ''}\n\nThinking about buying or selling? Let our award-winning team guide you every step of the way.\n\n(262) 901-0825 | donedeal.com\n\n#JustSold #ItsADoneDeal #TheJimGeracieTeam #WisconsinRealEstate #ClosingDay #RealtyExecutives #HappyClients`,
+
+  open_house: (details) => `OPEN HOUSE THIS WEEKEND!\n\nYou're invited to tour this beautiful home in person. ${details || 'Come see everything this property has to offer!'}\n\nNo appointment needed - just stop by! We'd love to meet you.\n\nQuestions? Call (262) 901-0825\n\n#OpenHouse #TheJimGeracieTeam #ItsADoneDeal #HouseHunting #WisconsinHomes #RealtyExecutives`,
+
+  market_update: (details) => `MARKET UPDATE: What's happening in the Fox Valley & Greater Milwaukee real estate market?\n\n${details || 'The spring market is heating up! Inventory remains tight, and well-priced homes are moving quickly. If you\'ve been thinking about selling, now might be the perfect time.'}\n\nMedian prices are up 5.2% year-over-year, and homes are averaging just 28 days on market.\n\nWant to know what your home is worth in today's market? We offer free, no-obligation home valuations.\n\n(262) 901-0825 | donedeal.com\n\n#MarketUpdate #WisconsinRealEstate #TheJimGeracieTeam #HomeValues #FoxValley #RealEstateMarket`,
+
+  tip: (details) => `HOME TIP OF THE WEEK!\n\n${details || 'Thinking about selling this spring? Here are 3 things you can do RIGHT NOW to boost your home\'s value:\n\n1. Fresh paint in neutral tones - instant transformation\n2. Deep clean and declutter every room - buyers need to see themselves in the space\n3. Boost curb appeal - first impressions are everything'}\n\nNeed personalized advice? We're here to help!\n\n(262) 901-0825 | donedeal.com\n\n#RealEstateTips #HomeSellingTips #TheJimGeracieTeam #WisconsinRealEstate #HomeBuying`,
+
+  testimonial: (details) => `WHAT OUR CLIENTS ARE SAYING!\n\n${details || '"Jim and Jill went above and beyond to help us find our dream home. Their knowledge of the area and dedication to our family was unmatched. We couldn\'t be happier!" - Happy Homeowner'}\n\nWith 94% of clients recommending us, we're proud of the relationships we build. YOUR dream home journey starts here.\n\n(262) 901-0825 | donedeal.com\n\n#ClientLove #Testimonial #TheJimGeracieTeam #ItsADoneDeal #FiveStarService #WisconsinRealEstate`,
+
+  community: (details) => `WE LOVE OUR COMMUNITY!\n\n${details || 'There\'s so much to love about living in the Brookfield/Fox Valley area. From amazing schools and parks to vibrant local businesses and restaurants, this community truly has it all.'}\n\nProud to call this area home and help families find theirs.\n\n#CommunityLove #Brookfield #FoxValley #TheJimGeracieTeam #WisconsinLiving #LocalLove`,
+
+  milestone: (details) => `TEAM MILESTONE!\n\n${details || 'Honored to receive the 2022 Pinnacle Award and 200% Club recognition from Realty Executives! None of this is possible without our incredible clients who trust us with their biggest investment.'}\n\nThank you for making us YOUR team. Here's to helping even more families in 2026!\n\n#PinnacleAward #200PercentClub #TheJimGeracieTeam #RealtyExecutives #Grateful #ItsADoneDeal`,
+
+  holiday: (details) => `${details || 'Wishing everyone a wonderful day from The Jim Geracie Team! Whether you\'re settling into a new home or dreaming about your next one, we\'re grateful to be part of your journey.'}\n\nFrom our family to yours - have a blessed day!\n\n#TheJimGeracieTeam #ItsADoneDeal #Blessed #WisconsinRealEstate`
+};
+
+function generateSocialPost() {
+  const type = document.getElementById('postType').value;
+  const details = document.getElementById('postDetails').value;
+  const tone = document.getElementById('postTone').value;
+  document.getElementById('socialOutput').textContent = socialTemplates[type](details, tone);
+}
+
+function updatePostTemplate() {
+  const type = document.getElementById('postType').value;
+  const placeholders = {
+    just_listed: 'e.g. 4 bed/2.5 bath in Brookfield, $525K, updated kitchen, large yard...',
+    just_sold: 'e.g. Beautiful ranch in New Berlin, sold in 5 days over asking!',
+    open_house: 'e.g. Saturday 1-3 PM at 123 Main St, Brookfield. 3 bed/2 bath, $399K.',
+    market_update: 'e.g. Spring inventory is low, rates are stabilizing, great time to sell...',
+    tip: 'e.g. 5 things every first-time buyer should know before making an offer...',
+    testimonial: 'e.g. Paste a client review or describe the experience...',
+    community: 'e.g. The new farmers market opens this Saturday on Main St!',
+    milestone: 'e.g. Just closed our 50th deal of the year!',
+    holiday: 'e.g. Happy Easter from our family to yours!'
+  };
+  document.getElementById('postDetails').placeholder = placeholders[type] || '';
+}
+
+// ===== CONTENT CALENDAR =====
+function loadCalendarSuggestions() {
+  const today = new Date();
+  const suggestions = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    const day = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const types = ['Market Tip', 'Just Listed', 'Community Spotlight', 'Open House', 'Buyer Tip', 'Testimonial', 'Seller Tip'];
+    suggestions.push({ date: day, type: types[i % types.length] });
+  }
+  document.getElementById('calendarSuggestions').innerHTML = suggestions.map(s =>
+    `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--light-gray);">
+      <span style="font-weight:600;font-size:0.85rem;">${s.date}</span>
+      <span class="template-tag">${s.type}</span>
+    </div>`
+  ).join('');
+}
+
+// ===== EMAIL TEMPLATES =====
+const emailTemplates = {
+  welcome: {
+    subject: "Welcome to The Jim Geracie Team Family!",
+    body: `Hi [CLIENT_NAME],
+
+Thank you for reaching out to The Jim Geracie Team! We're excited to help you with your real estate journey.
+
+With over 25 years of experience serving the greater Milwaukee and Fox Valley area, our team has helped hundreds of families find their perfect home or sell their property for top dollar. We've been recognized with the Pinnacle Award and 200% Club for our results, and 94% of our clients recommend us.
+
+Here's what you can expect from us:
+- Personalized service tailored to YOUR needs
+- Expert market knowledge of Brookfield, Waukesha, and surrounding areas
+- Professional marketing that gets results
+- Clear communication every step of the way
+
+I'd love to learn more about your goals. Would you have 15 minutes this week for a quick phone call or coffee? No pressure, no obligation - just a friendly conversation.
+
+Looking forward to connecting!
+
+Warmly,
+Jim & Jill Geracie
+The Jim Geracie Team | Realty Executives Integrity
+(262) 901-0825 | donedeal.com
+"It's a Done Deal!"`
+  },
+  buyer_nurture: {
+    subject: "Your Home Search Just Got Easier - Here's How",
+    body: `Hi [CLIENT_NAME],
+
+I hope you're doing well! I wanted to share some exciting updates about the housing market in the areas you're interested in.
+
+RIGHT NOW IN THE MARKET:
+- Median home prices in the greater Milwaukee area: $349K (+5.2% YoY)
+- Average days on market: 28 days
+- Inventory is tight, but great opportunities are popping up daily
+
+THREE THINGS SMART BUYERS ARE DOING:
+1. Getting pre-approved FIRST - this puts you in the strongest position
+2. Being ready to move quickly when the right home appears
+3. Working with a local expert who knows the market inside and out
+
+I've set up a custom property search just for you based on your criteria. You'll receive automatic alerts when new listings match your needs.
+
+Want to discuss your options? I'm here whenever you're ready.
+
+Best,
+Jim & Jill Geracie
+The Jim Geracie Team | (262) 901-0825
+donedeal.com`
+  },
+  seller_nurture: {
+    subject: "What Your Home Could Be Worth in Today's Market",
+    body: `Hi [CLIENT_NAME],
+
+Have you been curious about what your home might be worth? You're not alone - it's one of the most common questions we get, and the answer might surprise you.
+
+THE CURRENT MARKET FAVORS SELLERS:
+- Homes are selling at 98.4% of list price
+- Average days on market: just 28 days
+- Limited inventory means less competition for YOUR home
+
+WHAT SETS OUR APPROACH APART:
+- Professional photography & virtual tours
+- Targeted digital marketing across 50+ platforms
+- Proven pricing strategy that maximizes your return
+- Our extensive buyer database from 25+ years of relationships
+
+We'd love to provide you with a complimentary, no-obligation Comparative Market Analysis (CMA) for your home. It takes just 15 minutes and gives you real data to make informed decisions.
+
+Interested? Just reply to this email or call us at (262) 901-0825.
+
+Warmly,
+Jim & Jill Geracie
+The Jim Geracie Team | Realty Executives Integrity
+donedeal.com`
+  },
+  open_house_followup: {
+    subject: "Great Meeting You at Today's Open House!",
+    body: `Hi [CLIENT_NAME],
+
+It was wonderful meeting you at today's open house at [PROPERTY_ADDRESS]! Thank you for taking the time to stop by.
+
+I hope you enjoyed the tour. Here are some highlights of the property:
+- [Key features would be auto-populated from listing]
+- Listed at [price]
+- [Special notes]
+
+I'd love to hear your thoughts! A few questions:
+- What did you think of the property overall?
+- Would you like to schedule a private second showing?
+- Are there other homes in the area you'd like to see?
+
+Whether this is the one or we keep looking, I'm here to help you find the perfect fit. No rush, no pressure.
+
+Looking forward to hearing from you!
+
+Warmly,
+Jim & Jill Geracie
+(262) 901-0825 | donedeal.com`
+  },
+  just_listed: {
+    subject: "Just Listed: Beautiful Home in [AREA] - See It First!",
+    body: `Hi [CLIENT_NAME],
+
+I'm excited to share a brand new listing that just hit the market!
+
+[PROPERTY_ADDRESS]
+[Price] | [Beds] BD | [Baths] BA | [Sqft] SF
+
+This home features [key highlights] and is located in the heart of [neighborhood].
+
+As part of our valued network, you're seeing this BEFORE it goes out to the general public. If you or anyone you know might be interested, let's schedule a private showing.
+
+View full listing: donedeal.com
+
+Best,
+The Jim Geracie Team
+(262) 901-0825`
+  },
+  anniversary: {
+    subject: "Happy Home Anniversary, [CLIENT_NAME]!",
+    body: `Hi [CLIENT_NAME],
+
+Can you believe it's been [X] year(s) since you closed on your home? Time flies!
+
+I hope you and your family are loving every moment in your home. It was such a joy helping you find the perfect place, and I still remember how excited you were on closing day.
+
+As a quick FYI, home values in your area have continued to appreciate. If you're ever curious about your home's current market value, I'm always happy to run a quick analysis for you - no strings attached.
+
+Also, if you have any friends, family, or colleagues thinking about buying or selling, I'd be honored if you'd pass along my name. Referrals from happy clients like you are the highest compliment we can receive.
+
+Wishing you continued happiness in your home!
+
+Warmly,
+Jim & Jill Geracie
+The Jim Geracie Team | (262) 901-0825
+donedeal.com`
+  },
+  referral: {
+    subject: "A Quick Favor (and a Big Thank You!)",
+    body: `Hi [CLIENT_NAME],
+
+I hope this finds you well! I wanted to reach out for two reasons:
+
+FIRST - THANK YOU. Working with you was truly a pleasure, and I hope you're still loving your home. Clients like you are the reason we love what we do.
+
+SECOND - A SMALL FAVOR. If you know anyone thinking about buying or selling a home in the greater Milwaukee or Fox Valley area, we'd be incredibly grateful for the introduction. Just a quick text, email, or mention of our name goes a long way.
+
+Here's what they can expect from us:
+- The same dedicated, personal service you experienced
+- 25+ years of local market expertise
+- Award-winning results (Pinnacle Award, 200% Club)
+- No pressure, just honest guidance
+
+You can simply forward this email, share our website (donedeal.com), or have them call us directly at (262) 901-0825.
+
+Thank you so much for thinking of us. It truly means the world.
+
+With gratitude,
+Jim & Jill Geracie
+The Jim Geracie Team | Realty Executives Integrity`
+  }
+};
+
+function loadEmailTemplate(templateId) {
+  const template = emailTemplates[templateId];
+  document.getElementById('emailSubject').value = template.subject;
+  document.getElementById('emailBody').value = template.body;
+}
+
+function personalizeEmail() {
+  const name = document.getElementById('emailClientName').value || '[CLIENT_NAME]';
+  const property = document.getElementById('emailProperty').value || '[PROPERTY_ADDRESS]';
+  let body = document.getElementById('emailBody').value;
+  body = body.replace(/\[CLIENT_NAME\]/g, name);
+  body = body.replace(/\[PROPERTY_ADDRESS\]/g, property);
+  document.getElementById('emailBody').value = body;
+}
+
+// ===== OPEN HOUSE =====
+let ohGuests = [];
+
+function startOpenHouse() {
+  document.getElementById('ohSignInForm').style.display = 'block';
+}
+
+function submitOpenHouse() {
+  const name = document.getElementById('ohName').value;
+  const email = document.getElementById('ohEmail').value;
+  if (!name || !email) { alert('Please enter your name and email.'); return; }
+
+  const guest = {
+    name, email,
+    phone: document.getElementById('ohPhone').value,
+    agent: document.getElementById('ohAgent').value,
+    intent: document.getElementById('ohIntent').value,
+    source: document.getElementById('ohSource').value,
+    time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  };
+  ohGuests.push(guest);
+  updateOHList();
+
+  // Clear form
+  ['ohName', 'ohEmail', 'ohPhone'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ohAgent').value = 'no';
+  document.getElementById('ohIntent').value = 'buying';
+  document.getElementById('ohSource').value = 'sign';
+}
+
+function updateOHList() {
+  document.getElementById('ohCount').textContent = ohGuests.length;
+  document.getElementById('ohBadge').textContent = ohGuests.length;
+  const intentLabels = { buying: 'Active Buyer', curious: 'Curious/Neighbor', investor: 'Investor', selling: 'Potential Seller' };
+  document.getElementById('ohGuestList').innerHTML = ohGuests.map(g =>
+    `<div class="oh-guest-card">
+      <div class="oh-guest-avatar">${g.name.charAt(0)}</div>
+      <div class="oh-guest-info">
+        <div class="oh-guest-name">${g.name}</div>
+        <div class="oh-guest-detail">${g.email} | ${g.phone || 'No phone'}</div>
+        <div class="oh-guest-detail">${intentLabels[g.intent]} | Signed in at ${g.time}</div>
+      </div>
+      <span class="status ${g.agent === 'no' ? 'status-hot' : 'status-warm'}">${g.agent === 'no' ? 'No Agent' : 'Has Agent'}</span>
+    </div>`
+  ).join('');
+}
+
+// ===== PIPELINE =====
+function loadPipeline() {
+  const stages = {
+    'New Lead': [
+      { name: 'Rachel M.', detail: 'Chatbot lead - Buyer', value: '$350K budget' },
+      { name: 'Kevin S.', detail: 'Open house - Waukesha', value: '$280K budget' },
+      { name: 'Amy & Josh L.', detail: 'Referral - First-time buyers', value: '$320K budget' },
+    ],
+    'Contacted': [
+      { name: 'Sarah K.', detail: 'Buyer - Brookfield', value: '$400-550K range' },
+      { name: 'Greg P.', detail: 'Seller - New Berlin ranch', value: '$425K est.' },
+    ],
+    'Showing/CMA': [
+      { name: 'Mike & Lisa T.', detail: 'Seller - Spring listing', value: '$475K est.' },
+      { name: 'Jennifer W.', detail: 'Buyer - First-time, Waukesha', value: '$275K budget' },
+      { name: 'David R.', detail: 'Investor - Multi-family', value: '$500K+ budget' },
+    ],
+    'Under Contract': [
+      { name: 'Thompson Family', detail: 'Buyer - New Berlin', value: '$489,900' },
+      { name: 'Maria C.', detail: 'Seller - Greenfield condo', value: '$210,000' },
+    ],
+    'Closing': [
+      { name: 'Anderson Estate', detail: 'Seller - Williams Bay', value: '$725,000' },
+      { name: 'Chris & Jen N.', detail: 'Buyer - Menomonee Falls', value: '$519,000' },
+    ]
+  };
+
+  document.getElementById('pipelineBoard').innerHTML = Object.entries(stages).map(([stage, cards]) =>
+    `<div class="pipeline-column">
+      <div class="pipeline-column-header">${stage} <span class="pipeline-count">${cards.length}</span></div>
+      ${cards.map(c => `
+        <div class="pipeline-card">
+          <div class="pipeline-card-name">${c.name}</div>
+          <div class="pipeline-card-detail">${c.detail}</div>
+          <div class="pipeline-card-value">${c.value}</div>
+        </div>
+      `).join('')}
+    </div>`
+  ).join('');
+}
+
+// ===== FOLLOW-UPS =====
+function loadFollowUps() {
+  const followUps = [
+    { client: 'Sarah K.', type: 'Phone Call', due: 'Today', priority: 'hot', notes: 'Wants to see Brookfield listings this weekend' },
+    { client: 'Greg P.', type: 'Send CMA', due: 'Today', priority: 'hot', notes: 'Promised CMA by end of day' },
+    { client: 'Rachel M.', type: 'Email', due: 'Tomorrow', priority: 'warm', notes: 'Chatbot lead - send welcome email' },
+    { client: 'Amy & Josh L.', type: 'Phone Call', due: 'Mar 26', priority: 'warm', notes: 'Referral from Tom - first-time buyers' },
+    { client: 'Kevin S.', type: 'Text', due: 'Mar 27', priority: 'new', notes: 'Open house visitor - was interested but not urgent' },
+  ];
+
+  document.getElementById('followUpTable').innerHTML = followUps.map(f =>
+    `<tr>
+      <td><strong>${f.client}</strong></td>
+      <td>${f.type}</td>
+      <td>${f.due}</td>
+      <td><span class="status status-${f.priority}">${f.priority}</span></td>
+      <td style="font-size:0.85rem;color:var(--text-medium);">${f.notes}</td>
+      <td><button class="btn btn-sm btn-success" onclick="this.textContent='Done!';this.disabled=true;this.style.opacity=0.5;">Complete</button></td>
+    </tr>`
+  ).join('');
+}
+
+// ===== MARKET DATA =====
+function loadMarketData() {
+  const areas = [
+    { name: 'Williams Bay', price: 625000, color: '#1a1a5e' },
+    { name: 'Brookfield', price: 485000, color: '#2d2d7a' },
+    { name: 'New Berlin', price: 425000, color: '#3333a0' },
+    { name: 'Menomonee Falls', price: 395000, color: '#4444b0' },
+    { name: 'Waukesha', price: 349000, color: '#5555c0' },
+    { name: 'Muskego', price: 335000, color: '#6666d0' },
+    { name: 'Greenfield', price: 295000, color: '#7777e0' },
+    { name: 'West Allis', price: 265000, color: '#8888f0' },
+  ];
+
+  const maxPrice = Math.max(...areas.map(a => a.price));
+
+  document.getElementById('marketBars').innerHTML = areas.map(a =>
+    `<div class="market-bar">
+      <div class="market-bar-label">${a.name}</div>
+      <div class="market-bar-track">
+        <div class="market-bar-fill" style="width:${(a.price/maxPrice*100)}%;background:${a.color};"></div>
+      </div>
+      <div class="market-bar-value">$${(a.price/1000).toFixed(0)}K</div>
+    </div>`
+  ).join('');
+
+  const trends = [
+    { label: 'Spring 2026 Outlook', text: 'Strong seller\'s market continues. Low inventory + steady demand = competitive conditions.' },
+    { label: 'Interest Rates', text: 'Rates stabilizing in the mid-6% range. Buyers adjusting expectations and finding value.' },
+    { label: 'Hot Neighborhoods', text: 'Brookfield, New Berlin, and Menomonee Falls seeing the most buyer activity.' },
+    { label: 'Investment Opportunity', text: 'Multi-family properties in West Allis and Greenfield showing strong rental yield.' },
+  ];
+
+  document.getElementById('marketTrends').innerHTML = trends.map(t =>
+    `<div style="margin-bottom:1rem;">
+      <div style="font-weight:700;font-size:0.9rem;color:var(--navy);margin-bottom:4px;">${t.label}</div>
+      <div style="font-size:0.85rem;color:var(--text-medium);line-height:1.5;">${t.text}</div>
+    </div>`
+  ).join('');
+}
+
+function generateMarketPost() {
+  document.getElementById('marketContent').textContent = `MARKET UPDATE: Greater Milwaukee & Fox Valley - Spring 2026
+
+The spring market is HERE and it's favoring sellers! Here's what you need to know:
+
+Median Home Price: $349K (+5.2% year-over-year)
+Avg Days on Market: Just 28 days
+List-to-Sale Ratio: 98.4%
+Active Inventory: Down 12% from last month
+
+WHAT THIS MEANS FOR SELLERS:
+Your home could be worth more than you think. Limited inventory means less competition and motivated buyers ready to make strong offers.
+
+WHAT THIS MEANS FOR BUYERS:
+Be prepared and pre-approved. When the right home comes along, you need to move fast. Working with an experienced local team makes all the difference.
+
+Curious about YOUR home's value? We offer free, no-obligation home valuations.
+
+Call The Jim Geracie Team: (262) 901-0825
+Visit: donedeal.com
+
+#MarketUpdate #WisconsinRealEstate #TheJimGeracieTeam #Brookfield #FoxValley #HomeValues #RealEstateMarket #ItsADoneDeal`;
+}
+
+function generateMarketEmail() {
+  document.getElementById('marketContent').textContent = `Subject: Your Spring 2026 Market Update - What's Happening in Our Area
+
+Hi [Name],
+
+I wanted to share a quick update on what's happening in the greater Milwaukee real estate market this spring.
+
+THE NUMBERS:
+- Median home price: $349,000 (up 5.2% from last year)
+- Homes are selling in an average of 28 days
+- Sellers are getting 98.4% of their asking price
+- Active inventory is down 12% from last month
+
+WHAT THIS MEANS FOR YOU:
+Whether you're thinking about making a move or just want to stay informed, these numbers tell an important story. The market remains strong, and homeowners in our area are sitting on significant equity gains.
+
+If you've been wondering "what's my home worth?" - I'd love to provide you with a complimentary market analysis. No commitment, just honest data so you can make the best decision for your family.
+
+Just reply to this email or call me at (262) 901-0825. I'm here to help!
+
+Warmly,
+Jim & Jill Geracie
+The Jim Geracie Team | Realty Executives Integrity
+(262) 901-0825 | donedeal.com`;
+}
+
+// ===== UTILITY =====
+function copyContent(elementId) {
+  const text = document.getElementById(elementId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+
+function addNewLead() {
+  const name = prompt('Lead name:');
+  if (!name) return;
+  const detail = prompt('Details (e.g., Buyer - Brookfield):') || 'New lead';
+  alert(`${name} added to pipeline as a new lead! In a full deployment, this would save to a database and trigger the welcome email sequence.`);
+}
+
+// ===== INIT =====
+loadDashboard();
+loadPipeline();
+loadFollowUps();
+loadMarketData();
+loadCalendarSuggestions();
+</script>
+
+</body>
+</html>
