@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "geracie-server",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8895", "--directory", "/Users/faith/geracie-command-center"],
+      "port": 8895
+    }
+  ]
+}
